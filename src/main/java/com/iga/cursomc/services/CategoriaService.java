@@ -14,7 +14,7 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 	
 	// Método para buscar a categoria pelo o id
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 		Categoria obj = repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado!: Id: " + id
@@ -23,8 +23,15 @@ public class CategoriaService {
 		return obj;
 	}
 	
+	// Método para inserir categoria
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
+		return repo.save(obj);
+	}
+	
+	// Método para atualizar a categoria pelo ID
+	public Categoria update(Categoria obj) {
+		find(obj.getId()); // o find irá buscar a categoria pelo ID
 		return repo.save(obj);
 	}
 	

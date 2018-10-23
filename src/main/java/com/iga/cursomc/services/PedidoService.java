@@ -14,7 +14,7 @@ public class PedidoService {
 	private PedidoRepository repo;
 	
 	// Método para buscar a categoria pelo o id
-	public Pedido buscar(Integer id) {
+	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado!: Id: " + id
