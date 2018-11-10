@@ -51,7 +51,6 @@ public class CategoriaService {
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produto");
 		}
-		
 	}
 
 	public List<Categoria> findAll() {
@@ -66,5 +65,4 @@ public class CategoriaService {
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
 	}
-	
 }
