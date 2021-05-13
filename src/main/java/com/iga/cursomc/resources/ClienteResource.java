@@ -2,6 +2,7 @@ package com.iga.cursomc.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -29,8 +30,8 @@ public class ClienteResource {
 	private ClienteService service;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		Cliente obj = service.find(id);
+	public ResponseEntity<Optional<Cliente>> find(@PathVariable Integer id) {
+		Optional<Cliente> obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
