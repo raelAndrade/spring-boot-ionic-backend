@@ -1,9 +1,15 @@
 package com.iga.cursomc.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.iga.cursomc.domain.Categoria;
+import com.iga.cursomc.domain.Cidade;
+import com.iga.cursomc.domain.Cliente;
+import com.iga.cursomc.domain.Endereco;
+import com.iga.cursomc.domain.enums.TipoCliente;
+import com.iga.cursomc.dto.ClienteDTO;
+import com.iga.cursomc.dto.ClienteNewDTO;
+import com.iga.cursomc.repositories.ClienteRepository;
+import com.iga.cursomc.repositories.EnderecoRepository;
+import com.iga.cursomc.services.exceptions.DataIntegrityException;
+import com.iga.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -11,18 +17,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.iga.cursomc.domain.Cliente;
-import com.iga.cursomc.dto.ClienteDTO;
-import com.iga.cursomc.repositories.ClienteRepository;
-import com.iga.cursomc.services.exceptions.DataIntegrityException;
-import com.iga.cursomc.services.exceptions.ObjectNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	// Método para buscar a categoria pelo o id
 	public Optional<Cliente> find(Integer id) {
@@ -34,10 +41,12 @@ public class ClienteService {
 		return obj;
 	}
 
-	// Método para inserir categoria
+	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		obj = repo.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 
 	// Método para atualizar a categoria pelo ID
@@ -71,6 +80,21 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteDTO objDto) {
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
 		//throw new UnsupportedOperationException();
+	}
+
+	public Cliente fromDTO(ClienteNewDTO objDto) {
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
+		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objDto.getTelefone1());
+		if(objDto.getTelefone2() != null){
+			cli.getTelefones().add(objDto.getTelefone2());
+		}
+		if(objDto.getTelefone3() != null){
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
+		return cli;
 	}
 
 	// Método auxiliar para atualizar os dados do cliente criado
