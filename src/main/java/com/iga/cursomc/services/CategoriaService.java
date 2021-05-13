@@ -3,6 +3,7 @@ package com.iga.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.iga.cursomc.domain.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -41,8 +42,9 @@ public class CategoriaService {
 	
 	// Método para atualizar a categoria pelo ID
 	public Categoria update(Categoria obj) {
-		find(obj.getId()); // o find irá buscar a categoria pelo ID
-		return repo.save(obj);
+		Optional<Categoria> newObj = find(obj.getId()); // o find irá buscar a categoria pelo ID
+		updateData(newObj, obj);// atualiza o novo objeto que foi criado (newObj), com base no objeto que veio como argumento (obj)
+		return repo.save(newObj.get());
 	}
 
 	// Método para deletar pelo id
@@ -67,5 +69,11 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+
+	// Método auxiliar para atualizar os dados do cliente criado
+	private void updateData(Optional<Categoria> newObj, Categoria obj) {
+		// seta os valores do cliente (newObj) que veio do banco de dados, e atualiza os valores para os novos clientes (obj)
+		newObj.get().setNome(obj.getNome());
 	}
 }

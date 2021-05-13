@@ -3,6 +3,7 @@ package com.iga.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.iga.cursomc.domain.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -33,18 +34,17 @@ public class ClienteService {
 		return obj;
 	}
 
-	// Método para atualizar a categoria pelo ID
-	public Cliente update(Cliente obj) {
-		Cliente newObj = findAll().get(obj.getId()); // o find irá buscar a categoria pelo ID
-		updateData(newObj, obj);// atualiza o novo objeto que foi criado (newObj), com base no objeto que veio como argumento (obj)
-		return repo.save(newObj);
+	// Método para inserir categoria
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		return repo.save(obj);
 	}
 
-	// Método auxiliar para atualizar os dados do cliente criado
-	private void updateData(Cliente newObj, Cliente obj) {
-		// seta os valores do cliente (newObj) que veio do banco de dados, e atualiza os valores para os novos clientes (obj)
-		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());
+	// Método para atualizar a categoria pelo ID
+	public Cliente update(Cliente obj) {
+		Optional<Cliente> newObj = find(obj.getId()); // o find irá buscar a categoria pelo ID
+		updateData(newObj, obj);// atualiza o novo objeto que foi criado (newObj), com base no objeto que veio como argumento (obj)
+		return repo.save(newObj.get());
 	}
 
 	// Método para deletar pelo id
@@ -73,4 +73,10 @@ public class ClienteService {
 		//throw new UnsupportedOperationException();
 	}
 
+	// Método auxiliar para atualizar os dados do cliente criado
+	private void updateData(Optional<Cliente> newObj, Cliente obj) {
+		// seta os valores do cliente (newObj) que veio do banco de dados, e atualiza os valores para os novos clientes (obj)
+		newObj.get().setNome(obj.getNome());
+		newObj.get().setEmail(obj.getEmail());
+	}
 }

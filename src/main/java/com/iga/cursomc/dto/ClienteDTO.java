@@ -2,11 +2,12 @@ package com.iga.cursomc.dto;
 
 import java.io.Serializable;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.iga.cursomc.domain.Cliente;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class ClienteDTO implements Serializable {
 
