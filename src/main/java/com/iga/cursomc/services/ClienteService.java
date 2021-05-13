@@ -1,11 +1,13 @@
 package com.iga.cursomc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,8 @@ public class ClienteService {
 	private ClienteRepository repo;
 
 	// Método para buscar a categoria pelo o id
-	public Cliente find(Integer id) {
-		Cliente obj = repo.findOne(id);
+	public Optional<Cliente> find(Integer id) {
+		Optional<Cliente> obj = repo.findById(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
 					"Objeto não encontrado!: Id: " + id + ", Tipo: " + Cliente.class.getName());
@@ -33,8 +35,8 @@ public class ClienteService {
 
 	// Método para atualizar a categoria pelo ID
 	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId()); // o find irá buscar a categoria pelo ID
-		updateData(newObj, obj);// atualiza o novo objeto que foi criado (newObj), com base no objeto que veio como argumento (obj) 
+		Cliente newObj = findAll().get(obj.getId()); // o find irá buscar a categoria pelo ID
+		updateData(newObj, obj);// atualiza o novo objeto que foi criado (newObj), com base no objeto que veio como argumento (obj)
 		return repo.save(newObj);
 	}
 
@@ -49,7 +51,7 @@ public class ClienteService {
 	public void delete(Integer id) {
 		find(id); // pega o id do cliente
 		try {
-			repo.delete(id); // deleta o cliente pelo id que foi pego no método find
+			repo.deleteById(id); // deleta o cliente pelo id que foi pego no método find
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir porque há entidades relacionadas");
 		}
@@ -61,7 +63,8 @@ public class ClienteService {
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		// PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Pageable pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
 
