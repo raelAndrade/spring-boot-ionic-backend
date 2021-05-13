@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.iga.cursomc.domain.Categoria;
 import com.iga.cursomc.domain.Produto;
+
+import javax.validation.constraints.NotEmpty;
 
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
