@@ -2,6 +2,7 @@ package com.iga.cursomc.dto;
 
 import java.io.Serializable;
 
+import com.iga.cursomc.services.validation.ClientUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import com.iga.cursomc.domain.Cliente;
@@ -9,6 +10,7 @@ import com.iga.cursomc.domain.Cliente;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+@ClientUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
