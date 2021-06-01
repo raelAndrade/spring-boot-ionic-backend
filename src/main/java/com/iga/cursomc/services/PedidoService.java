@@ -30,5 +30,4 @@ public class PedidoService {
 	public List<Pedido> findAll() {
 		return repo.findAll();
 	}
-	
 }
