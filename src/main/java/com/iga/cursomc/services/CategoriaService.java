@@ -1,9 +1,10 @@
 package com.iga.cursomc.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.iga.cursomc.domain.Cliente;
+import com.iga.cursomc.domain.Categoria;
+import com.iga.cursomc.dto.CategoriaDTO;
+import com.iga.cursomc.repositories.CategoriaRepository;
+import com.iga.cursomc.services.exceptions.DataIntegrityException;
+import com.iga.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.iga.cursomc.domain.Categoria;
-import com.iga.cursomc.dto.CategoriaDTO;
-import com.iga.cursomc.repositories.CategoriaRepository;
-import com.iga.cursomc.services.exceptions.DataIntegrityException;
-import com.iga.cursomc.services.exceptions.ObjectNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoriaService {

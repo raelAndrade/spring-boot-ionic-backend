@@ -1,12 +1,8 @@
 package com.iga.cursomc.resources;
 
-import com.iga.cursomc.domain.Categoria;
-import com.iga.cursomc.domain.Pedido;
 import com.iga.cursomc.domain.Produto;
-import com.iga.cursomc.dto.CategoriaDTO;
 import com.iga.cursomc.dto.ProdutoDTO;
 import com.iga.cursomc.resources.utils.URL;
-import com.iga.cursomc.services.PedidoService;
 import com.iga.cursomc.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
